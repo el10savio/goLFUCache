@@ -5,10 +5,15 @@ type Node struct {
 	Value    interface{}
 	previous *Node
 	next     *Node
-	head     *Node
 }
 
 // DoublyLinkedList ...
-func DoublyLinkedList() *Node {
-	return &Node{}
+type DoublyLinkedList struct {
+	Length uint
+	head   *Node
+}
+
+// InitDoublyLinkedList ...
+func InitDoublyLinkedList(length uint) *DoublyLinkedList {
+	return &DoublyLinkedList{Length: length, head: nil}
 }
