@@ -50,6 +50,32 @@ func (dlist *DoublyLinkedList) GetTail() (int, error) {
 	return dlist.tail.Value, nil
 }
 
+// GetNextElement ...
+func GetNextElement(head *Node) (int, error) {
+	if head == nil {
+		return 0, errors.New("node element does not exist")
+	}
+
+	if head.next == nil {
+		return 0, errors.New("node next element does not exist")
+	}
+
+	return head.next.Value, nil
+}
+
+// GetPreviousElement ...
+func GetPreviousElement(head *Node) (int, error) {
+	if head == nil {
+		return 0, errors.New("node element does not exist")
+	}
+
+	if head.previous == nil {
+		return 0, errors.New("node previous element does not exist")
+	}
+
+	return head.previous.Value, nil
+}
+
 // InsertAtFront ...
 func (dList *DoublyLinkedList) InsertAtFront(value int) {
 	node := Node{Value: value}
