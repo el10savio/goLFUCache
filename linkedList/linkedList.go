@@ -109,7 +109,7 @@ func (dList *DoublyLinkedList) InsertBetween(value, valuePrevious, valueNext int
 	head := dList.head
 
 	if head == nil {
-		return errors.New("head is not present")
+		return errors.New("head does not exist")
 	}
 
 	node := Node{Value: value}
@@ -124,5 +124,62 @@ func (dList *DoublyLinkedList) InsertBetween(value, valuePrevious, valueNext int
 		head = head.next
 	}
 
-	return errors.New("range not present")
+	return errors.New("range does not exist")
+}
+
+// RemoveHead ...
+func (dList *DoublyLinkedList) RemoveHead() error {
+	if dList.head == nil {
+		return errors.New("head does not exist")
+	}
+
+	// if dList.head.next == nil {
+	// 	dList.head = dList.head.next
+	// 	return nil
+	// }
+
+	dList.head = dList.head.next
+
+	return nil
+}
+
+// RemoveTail ...
+func (dList *DoublyLinkedList) RemoveTail() error {
+	if dList.tail == nil {
+		return errors.New("tail does not exist")
+	}
+
+	// if dList.tail.previous == nil {
+	// 	dList.tail = dList.tail.previous
+	// 	return nil
+	// }
+
+	dList.tail = dList.tail.previous
+
+	return nil
+}
+
+// RemoveElement ...
+func (dList *DoublyLinkedList) RemoveElement(value int) error {
+	head := dList.head
+
+	if head == nil {
+		return errors.New("head does not exist")
+	}
+
+	for head != nil && head.next != nil {
+		if head.next.Value == value {
+			head.next = head.next.next
+			head.next.previous = head
+			return nil
+		}
+		head = head.next
+	}
+
+	return errors.New("node element does not exist")
+}
+
+// ClearList ...
+func (dList *DoublyLinkedList) ClearList() {
+	dList = &DoublyLinkedList{Length: dList.Length, head: nil, tail: nil}
 }
