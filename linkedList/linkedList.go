@@ -26,14 +26,6 @@ func (dList *DoublyLinkedList) List() []int {
 	return traverseList(dList.head)
 }
 
-// traverseList ...
-func traverseList(head *Node) []int {
-	if head == nil {
-		return []int{}
-	}
-	return append([]int{head.Value}, traverseList(head.next)...)
-}
-
 // GetHead ...
 func (dlist *DoublyLinkedList) GetHead() (int, error) {
 	if dlist.head == nil {
@@ -48,32 +40,6 @@ func (dlist *DoublyLinkedList) GetTail() (int, error) {
 		return 0, errors.New("tail does not exist")
 	}
 	return dlist.tail.Value, nil
-}
-
-// GetNextElement ...
-func GetNextElement(head *Node) (int, error) {
-	if head == nil {
-		return 0, errors.New("node element does not exist")
-	}
-
-	if head.next == nil {
-		return 0, errors.New("node next element does not exist")
-	}
-
-	return head.next.Value, nil
-}
-
-// GetPreviousElement ...
-func GetPreviousElement(head *Node) (int, error) {
-	if head == nil {
-		return 0, errors.New("node element does not exist")
-	}
-
-	if head.previous == nil {
-		return 0, errors.New("node previous element does not exist")
-	}
-
-	return head.previous.Value, nil
 }
 
 // InsertAtFront ...
@@ -182,4 +148,38 @@ func (dList *DoublyLinkedList) RemoveElement(value int) error {
 // ClearList ...
 func (dList *DoublyLinkedList) ClearList() {
 	dList = &DoublyLinkedList{Length: dList.Length, head: nil, tail: nil}
+}
+
+// traverseList ...
+func traverseList(head *Node) []int {
+	if head == nil {
+		return []int{}
+	}
+	return append([]int{head.Value}, traverseList(head.next)...)
+}
+
+// GetNextElement ...
+func GetNextElement(head *Node) (int, error) {
+	if head == nil {
+		return 0, errors.New("node element does not exist")
+	}
+
+	if head.next == nil {
+		return 0, errors.New("node next element does not exist")
+	}
+
+	return head.next.Value, nil
+}
+
+// GetPreviousElement ...
+func GetPreviousElement(head *Node) (int, error) {
+	if head == nil {
+		return 0, errors.New("node element does not exist")
+	}
+
+	if head.previous == nil {
+		return 0, errors.New("node previous element does not exist")
+	}
+
+	return head.previous.Value, nil
 }
