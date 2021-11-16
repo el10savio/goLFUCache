@@ -17,8 +17,11 @@ type DoublyLinkedList struct {
 }
 
 // InitDoublyLinkedList ...
-func InitDoublyLinkedList(length uint) *DoublyLinkedList {
-	return &DoublyLinkedList{Length: length, head: nil, tail: nil}
+func InitDoublyLinkedList(length uint) (*DoublyLinkedList, error) {
+	if length == 0 {
+		return nil, errors.New("list length cannot be zero")
+	}
+	return &DoublyLinkedList{Length: length, head: nil, tail: nil}, nil
 }
 
 // List ...
