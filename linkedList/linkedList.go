@@ -1,6 +1,8 @@
 package linkedlist
 
-import "errors"
+import (
+	"errors"
+)
 
 // Node ...
 type Node struct {
@@ -29,6 +31,11 @@ func (dList *DoublyLinkedList) List() []int {
 	return traverseList(dList.head)
 }
 
+// ListReverse ...
+func (dList *DoublyLinkedList) ListReverse() []int {
+	return traverseListReverse(dList.tail)
+}
+
 // GetHead ...
 func (dlist *DoublyLinkedList) GetHead() (int, error) {
 	if dlist.head == nil {
@@ -51,12 +58,14 @@ func (dList *DoublyLinkedList) InsertAtFront(value int) {
 
 	if dList.head == nil {
 		dList.head = &node
+		dList.tail = &node
 		return
 	}
 
-	temp := dList.head.next
+	temp := dList.head
 	dList.head = &node
-	temp.previous = dList.head
+	dList.head.next = temp
+	temp.previous = &node
 }
 
 // InsertAtEnd ...
@@ -159,6 +168,14 @@ func traverseList(head *Node) []int {
 		return []int{}
 	}
 	return append([]int{head.Value}, traverseList(head.next)...)
+}
+
+// traverseListReverse ...
+func traverseListReverse(tail *Node) []int {
+	if tail == nil {
+		return []int{}
+	}
+	return append([]int{tail.Value}, traverseListReverse(tail.previous)...)
 }
 
 // GetNextElement ...
