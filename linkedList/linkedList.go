@@ -52,8 +52,8 @@ func (dlist *DoublyLinkedList) GetTail() (int, error) {
 	return dlist.tail.Value, nil
 }
 
-// InsertAtFront ...
-func (dList *DoublyLinkedList) InsertAtFront(value int) {
+// Prepend (InsertAtFront) ...
+func (dList *DoublyLinkedList) Prepend(value int) {
 	node := Node{Value: value}
 
 	if dList.head == nil {
@@ -67,13 +67,13 @@ func (dList *DoublyLinkedList) InsertAtFront(value int) {
 	dList.head = &node
 }
 
-// InsertAtEnd ...
-func (dList *DoublyLinkedList) InsertAtEnd(value int) {
+// Append (InsertAtEnd) ...
+func (dList *DoublyLinkedList) Append(value int) {
 	node := Node{Value: value}
 
-	if dList.tail == nil {
-		dList.tail = &node
+	if dList.head == nil {
 		dList.head = &node
+		dList.tail = &node
 		return
 	}
 

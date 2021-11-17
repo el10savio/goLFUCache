@@ -30,7 +30,7 @@ func TestInitDoublyLinkedList(t *testing.T) {
 	}
 }
 
-var testInsertAtFrontTestSuite = []struct {
+var testPrependTestSuite = []struct {
 	name                    string
 	inputLength             uint
 	inputValues             []int
@@ -44,16 +44,16 @@ var testInsertAtFrontTestSuite = []struct {
 	{"MultipleValues", 5, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}, []int{1, 2, 3, 4, 5}},
 }
 
-// TestInsertAtFront tests the functionality
-// of the InsertAtFront() function
-func TestInsertAtFront(t *testing.T) {
-	for _, testCase := range testInsertAtFrontTestSuite {
+// TestPrepend tests the functionality
+// of the Prepend() function
+func TestPrepend(t *testing.T) {
+	for _, testCase := range testPrependTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
 			dList, _ := InitDoublyLinkedList(testCase.inputLength)
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
-				dList.InsertAtFront(inputValue)
+				dList.Prepend(inputValue)
 			}
 
 			actualValues, actualValuesReversed := dList.List(), dList.ListReverse()
@@ -64,7 +64,7 @@ func TestInsertAtFront(t *testing.T) {
 	}
 }
 
-var testInsertAtEndTestSuite = []struct {
+var testAppendTestSuite = []struct {
 	name                    string
 	inputLength             uint
 	inputValues             []int
@@ -78,17 +78,54 @@ var testInsertAtEndTestSuite = []struct {
 	{"MultipleValues", 5, []int{1, 2, 3, 4, 5}, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}},
 }
 
-// TestInsertAtEnd tests the functionality
-// of the InsertAtEnd() function
-func TestInsertAtEnd(t *testing.T) {
-	for _, testCase := range testInsertAtEndTestSuite {
+// TestAppend tests the functionality
+// of the Append() function
+func TestAppend(t *testing.T) {
+	for _, testCase := range testAppendTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
 			dList, _ := InitDoublyLinkedList(testCase.inputLength)
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
-				dList.InsertAtEnd(inputValue)
+				dList.Append(inputValue)
 			}
+
+			actualValues, actualValuesReversed := dList.List(), dList.ListReverse()
+
+			assert.Equal(t, testCase.expectedValues, actualValues)
+			assert.Equal(t, testCase.expectedValuesInReverse, actualValuesReversed)
+		})
+	}
+}
+
+var testInsertBetweenTestSuite = []struct {
+	name                    string
+	inputLength             uint
+	inputValues             []int
+	inputValueToAdd         int
+	inputValuePrevious      int
+	inputValueNext          int
+	expectedValues          []int
+	expectedValuesInReverse []int
+	expectedError           error
+}{
+	{"BasicFuntionality", 10, []int{1, 2, 3, 4, 5}, 7, 3, 4, []int{1, 2, 3, 7, 4, 5}, []int{5, 4, 7, 3, 2, 1}, nil},
+}
+
+// TestInsertBetween tests the functionality
+// of the InsertBetween() function
+func TestInsertBetween(t *testing.T) {
+	for _, testCase := range testInsertBetweenTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			actualError := dList.InsertBetween(testCase.inputValueToAdd, testCase.inputValuePrevious, testCase.inputValueNext)
+			assert.Equal(t, testCase.expectedError, actualError)
 
 			actualValues, actualValuesReversed := dList.List(), dList.ListReverse()
 
