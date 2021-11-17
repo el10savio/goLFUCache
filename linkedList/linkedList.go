@@ -162,22 +162,6 @@ func (dList *DoublyLinkedList) ClearList() {
 	dList = &DoublyLinkedList{Length: dList.Length, head: nil, tail: nil}
 }
 
-// traverseList ...
-func traverseList(head *Node) []int {
-	if head == nil {
-		return []int{}
-	}
-	return append([]int{head.Value}, traverseList(head.next)...)
-}
-
-// traverseListReverse ...
-func traverseListReverse(tail *Node) []int {
-	if tail == nil {
-		return []int{}
-	}
-	return append([]int{tail.Value}, traverseListReverse(tail.previous)...)
-}
-
 // GetNextElement ...
 func GetNextElement(node *Node) (int, error) {
 	if node == nil {
@@ -202,4 +186,20 @@ func GetPreviousElement(node *Node) (int, error) {
 	}
 
 	return node.previous.Value, nil
+}
+
+// traverseList ...
+func traverseList(head *Node) []int {
+	if head == nil {
+		return []int{}
+	}
+	return append([]int{head.Value}, traverseList(head.next)...)
+}
+
+// traverseListReverse ...
+func traverseListReverse(tail *Node) []int {
+	if tail == nil {
+		return []int{}
+	}
+	return append([]int{tail.Value}, traverseListReverse(tail.previous)...)
 }
