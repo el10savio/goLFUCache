@@ -145,3 +145,69 @@ func TestInsertBetween(t *testing.T) {
 		})
 	}
 }
+
+var testGetHeadTestSuite = []struct {
+	name          string
+	inputLength   uint
+	inputValues   []int
+	expectedHead  int
+	expectedError error
+}{
+	{"BasicFuntionality", 2, []int{10}, 10, nil},
+	{"EmptyList", 2, []int{}, 0, errors.New("head does not exist")},
+	{"TwoValues", 2, []int{1, 2}, 1, nil},
+	{"MultipleValues", 5, []int{1, 2, 3, 4, 5}, 1, nil},
+}
+
+// TestGetHead tests the functionality
+// of the GetHead() function
+func TestGetHead(t *testing.T) {
+	for _, testCase := range testGetHeadTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			actualHead, actualError := dList.GetHead()
+
+			assert.Equal(t, testCase.expectedHead, actualHead)
+			assert.Equal(t, testCase.expectedError, actualError)
+		})
+	}
+}
+
+var testGetTailTestSuite = []struct {
+	name          string
+	inputLength   uint
+	inputValues   []int
+	expectedTail  int
+	expectedError error
+}{
+	{"BasicFuntionality", 2, []int{10}, 10, nil},
+	{"EmptyList", 2, []int{}, 0, errors.New("tail does not exist")},
+	{"TwoValues", 2, []int{1, 2}, 2, nil},
+	{"MultipleValues", 5, []int{1, 2, 3, 4, 5}, 5, nil},
+}
+
+// TestGetTail tests the functionality
+// of the GetTail() function
+func TestGetTail(t *testing.T) {
+	for _, testCase := range testGetTailTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			actualTail, actualError := dList.GetTail()
+
+			assert.Equal(t, testCase.expectedTail, actualTail)
+			assert.Equal(t, testCase.expectedError, actualError)
+		})
+	}
+}
