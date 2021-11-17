@@ -63,3 +63,37 @@ func TestInsertAtFront(t *testing.T) {
 		})
 	}
 }
+
+var testInsertAtEndTestSuite = []struct {
+	name                    string
+	inputLength             uint
+	inputValues             []int
+	expectedValues          []int
+	expectedValuesInReverse []int
+}{
+	{"BasicFuntionality", 2, []int{10}, []int{10}, []int{10}},
+	{"EmptyValues", 5, []int{}, []int{}, []int{}},
+	{"SizeOne", 1, []int{10}, []int{10}, []int{10}},
+	{"TwoValues", 5, []int{1, 2}, []int{1, 2}, []int{2, 1}},
+	{"MultipleValues", 5, []int{1, 2, 3, 4, 5}, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}},
+}
+
+// TestInsertAtEnd tests the functionality
+// of the InsertAtEnd() function
+func TestInsertAtEnd(t *testing.T) {
+	for _, testCase := range testInsertAtEndTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.InsertAtEnd(inputValue)
+			}
+
+			actualValues, actualValuesReversed := dList.List(), dList.ListReverse()
+
+			assert.Equal(t, testCase.expectedValues, actualValues)
+			assert.Equal(t, testCase.expectedValuesInReverse, actualValuesReversed)
+		})
+	}
+}

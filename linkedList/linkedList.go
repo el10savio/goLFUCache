@@ -62,10 +62,9 @@ func (dList *DoublyLinkedList) InsertAtFront(value int) {
 		return
 	}
 
-	temp := dList.head
+	dList.head.previous = &node
+	node.next = dList.head
 	dList.head = &node
-	dList.head.next = temp
-	temp.previous = &node
 }
 
 // InsertAtEnd ...
@@ -74,12 +73,13 @@ func (dList *DoublyLinkedList) InsertAtEnd(value int) {
 
 	if dList.tail == nil {
 		dList.tail = &node
+		dList.head = &node
 		return
 	}
 
-	temp := dList.tail.previous
+	dList.tail.next = &node
+	node.previous = dList.tail
 	dList.tail = &node
-	temp.next = dList.tail
 }
 
 // InsertBetween ...
