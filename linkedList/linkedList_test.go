@@ -110,6 +110,17 @@ var testInsertBetweenTestSuite = []struct {
 	expectedError           error
 }{
 	{"BasicFuntionality", 10, []int{1, 2, 3, 4, 5}, 7, 3, 4, []int{1, 2, 3, 7, 4, 5}, []int{5, 4, 7, 3, 2, 1}, nil},
+	{"TwoElements", 10, []int{1, 2}, 7, 1, 2, []int{1, 7, 2}, []int{2, 7, 1}, nil},
+	{"EmptyList", 10, []int{}, 7, 3, 4, []int{}, []int{}, errors.New("head does not exist")},
+	{"SingleElement", 10, []int{1}, 7, 1, 4, []int{1}, []int{1}, errors.New("range does not exist")},
+	{"RangeDoesNotExist", 10, []int{1, 2, 3, 4, 5}, 7, 11, 21, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}, errors.New("range does not exist")},
+	{"RangeStartDoesNotExist", 10, []int{1, 2, 3, 4, 5}, 7, 11, 4, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}, errors.New("range does not exist")},
+	{"RangeEndDoesNotExist", 10, []int{1, 2, 3, 4, 5}, 7, 3, 21, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}, errors.New("range does not exist")},
+	{"RangeValuesSameAsInsert", 10, []int{1, 2, 3, 3, 5}, 3, 3, 3, []int{1, 2, 3, 3, 3, 5}, []int{5, 3, 3, 3, 2, 1}, nil},
+	{"RangeStartSameAsInsert", 10, []int{1, 2, 3, 4, 5}, 3, 3, 4, []int{1, 2, 3, 3, 4, 5}, []int{5, 4, 3, 3, 2, 1}, nil},
+	{"RangeEndSameAsInsert", 10, []int{1, 2, 3, 4, 5}, 4, 3, 4, []int{1, 2, 3, 4, 4, 5}, []int{5, 4, 4, 3, 2, 1}, nil},
+	{"RangeNotInBetween", 10, []int{1, 2, 3, 4, 5}, 7, 3, 5, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}, errors.New("range does not exist")},
+	{"RangeInBetweenEnd", 10, []int{1, 2, 3, 4, 5}, 7, 4, 5, []int{1, 2, 3, 4, 7, 5}, []int{5, 7, 4, 3, 2, 1}, nil},
 }
 
 // TestInsertBetween tests the functionality
