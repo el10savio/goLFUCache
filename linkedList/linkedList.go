@@ -111,12 +111,14 @@ func (dList *DoublyLinkedList) RemoveHead() error {
 		return errors.New("head does not exist")
 	}
 
-	// if dList.head.next == nil {
-	// 	dList.head = dList.head.next
-	// 	return nil
-	// }
+	if dList.head == dList.tail {
+		dList.head = nil
+		dList.tail = nil
+		return nil
+	}
 
 	dList.head = dList.head.next
+	(dList.head).previous = nil
 
 	return nil
 }
@@ -126,11 +128,6 @@ func (dList *DoublyLinkedList) RemoveTail() error {
 	if dList.tail == nil {
 		return errors.New("tail does not exist")
 	}
-
-	// if dList.tail.previous == nil {
-	// 	dList.tail = dList.tail.previous
-	// 	return nil
-	// }
 
 	dList.tail = dList.tail.previous
 

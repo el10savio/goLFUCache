@@ -211,3 +211,41 @@ func TestGetTail(t *testing.T) {
 		})
 	}
 }
+
+var testRemoveHeadTestSuite = []struct {
+	name                    string
+	inputLength             uint
+	inputValues             []int
+	expectedValues          []int
+	expectedValuesInReverse []int
+	expectedError           error
+}{
+	{"BasicFuntionality", 2, []int{10}, []int{}, []int{}, nil},
+	{"EmptyValues", 5, []int{}, []int{}, []int{}, errors.New("head does not exist")},
+	{"SizeOne", 1, []int{10}, []int{}, []int{}, nil},
+	{"TwoValues", 5, []int{1, 2}, []int{2}, []int{2}, nil},
+	{"MultipleValues", 5, []int{1, 2, 3, 4, 5}, []int{2, 3, 4, 5}, []int{5, 4, 3, 2}, nil},
+}
+
+// TestRemoveHead tests the functionality
+// of the RemoveHead() function
+func TestRemoveHead(t *testing.T) {
+	for _, testCase := range testRemoveHeadTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			actualError := dList.RemoveHead()
+			assert.Equal(t, testCase.expectedError, actualError)
+
+			actualValues, actualValuesReversed := dList.List(), dList.ListReverse()
+
+			assert.Equal(t, testCase.expectedValues, actualValues)
+			assert.Equal(t, testCase.expectedValuesInReverse, actualValuesReversed)
+		})
+	}
+}
