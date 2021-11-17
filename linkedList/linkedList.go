@@ -179,27 +179,27 @@ func traverseListReverse(tail *Node) []int {
 }
 
 // GetNextElement ...
-func GetNextElement(head *Node) (int, error) {
-	if head == nil {
+func GetNextElement(node *Node) (int, error) {
+	if node == nil {
 		return 0, errors.New("node element does not exist")
 	}
 
-	if head.next == nil {
+	if node.next == nil {
 		return 0, errors.New("node next element does not exist")
 	}
 
-	return head.next.Value, nil
+	return node.next.Value, nil
 }
 
 // GetPreviousElement ...
-func GetPreviousElement(head *Node) (int, error) {
-	if head == nil {
+func GetPreviousElement(node *Node) (int, error) {
+	if node == nil {
 		return 0, errors.New("node element does not exist")
 	}
 
-	if head.previous == nil {
+	if node.previous == nil {
 		return 0, errors.New("node previous element does not exist")
 	}
 
-	return head.previous.Value, nil
+	return node.previous.Value, nil
 }
