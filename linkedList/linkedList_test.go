@@ -287,3 +287,46 @@ func TestRemoveTail(t *testing.T) {
 		})
 	}
 }
+
+var testRemoveElementTestSuite = []struct {
+	name                    string
+	inputLength             uint
+	inputValues             []int
+	inputValueToRemove      int
+	expectedValues          []int
+	expectedValuesInReverse []int
+	expectedError           error
+}{
+	{"BasicFunctionality", 5, []int{1, 2, 3, 4, 5}, 3, []int{1, 2, 4, 5}, []int{5, 4, 2, 1}, nil},
+	{"SingleElement", 1, []int{1}, 1, []int{}, []int{}, nil},
+	{"TwoElementsValueAtStart", 2, []int{1, 2}, 1, []int{2}, []int{2}, nil},
+	{"TwoElementsValueAtEnd", 2, []int{1, 2}, 2, []int{1}, []int{1}, nil},
+	{"EmptyList", 10, []int{}, 3, []int{}, []int{}, errors.New("head does not exist")},
+	{"ValueDoesNotExist", 5, []int{1, 2, 3, 4, 5}, 7, []int{1, 2, 3, 4, 5}, []int{5, 4, 3, 2, 1}, errors.New("element does not exist")},
+	{"MultipleValuesExist", 5, []int{1, 3, 3, 4, 5}, 3, []int{1, 3, 4, 5}, []int{5, 4, 3, 1}, nil},
+	{"ValueExistsAtStart", 5, []int{1, 2, 3, 4, 5}, 1, []int{2, 3, 4, 5}, []int{5, 4, 3, 2}, nil},
+	{"ValueExistsAtEnd", 5, []int{1, 2, 3, 4, 5}, 5, []int{1, 2, 3, 4}, []int{4, 3, 2, 1}, nil},
+}
+
+// TestRemoveElement tests the functionality
+// of the RemoveElement() function
+func TestRemoveElement(t *testing.T) {
+	for _, testCase := range testRemoveElementTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			actualError := dList.RemoveElement(testCase.inputValueToRemove)
+			assert.Equal(t, testCase.expectedError, actualError)
+
+			actualValues, actualValuesReversed := dList.List(), dList.ListReverse()
+
+			assert.Equal(t, testCase.expectedValues, actualValues)
+			assert.Equal(t, testCase.expectedValuesInReverse, actualValuesReversed)
+		})
+	}
+}
