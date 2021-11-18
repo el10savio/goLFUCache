@@ -330,3 +330,43 @@ func TestRemoveElement(t *testing.T) {
 		})
 	}
 }
+
+var testFindElementTestSuite = []struct {
+	name              string
+	inputLength       uint
+	inputValues       []int
+	inputValueToFind  int
+	expectedNodeValue int
+	expectedError     error
+}{
+	{"BasicFunctionality", 5, []int{1, 2, 3, 4, 5}, 3, 3, nil},
+	{"SingleElement", 1, []int{1}, 1, 1, nil},
+	{"TwoElements", 2, []int{1, 2}, 2, 2, nil},
+	{"EmptyList", 5, []int{}, 11, 0, errors.New("head does not exist")},
+	{"NodeNotPresent", 5, []int{1, 2, 3, 4, 5}, 11, 0, errors.New("element does not exist")},
+}
+
+// TestFindElement tests the functionality
+// of the FindElement() function
+func TestFindElement(t *testing.T) {
+	for _, testCase := range testFindElementTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			actualNode, actualError := dList.FindElement(testCase.inputValueToFind)
+
+			if actualNode == nil {
+				assert.Equal(t, testCase.expectedNodeValue, 0)
+			} else {
+				assert.Equal(t, testCase.expectedNodeValue, actualNode.Value)
+			}
+
+			assert.Equal(t, testCase.expectedError, actualError)
+		})
+	}
+}

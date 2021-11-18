@@ -141,24 +141,6 @@ func (dList *DoublyLinkedList) RemoveTail() error {
 	return nil
 }
 
-// FindElement ...
-func (dList *DoublyLinkedList) FindElement(value int) (*Node, error) {
-	if dList.head == nil {
-		return nil, errors.New("head does not exist")
-	}
-
-	temp := dList.head
-
-	for temp != nil {
-		if temp.Value == value {
-			return temp, nil
-		}
-		temp = temp.next
-	}
-
-	return nil, errors.New("element does not exist")
-}
-
 // RemoveElement ...
 func (dList *DoublyLinkedList) RemoveElement(value int) error {
 	if dList.head == nil {
@@ -182,6 +164,24 @@ func (dList *DoublyLinkedList) RemoveElement(value int) error {
 	node.next.previous = node.previous
 
 	return nil
+}
+
+// FindElement ...
+func (dList *DoublyLinkedList) FindElement(value int) (*Node, error) {
+	if dList.head == nil {
+		return nil, errors.New("head does not exist")
+	}
+
+	temp := dList.head
+
+	for temp != nil {
+		if temp.Value == value {
+			return temp, nil
+		}
+		temp = temp.next
+	}
+
+	return nil, errors.New("element does not exist")
 }
 
 // ClearList ...
