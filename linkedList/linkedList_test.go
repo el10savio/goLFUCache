@@ -249,3 +249,41 @@ func TestRemoveHead(t *testing.T) {
 		})
 	}
 }
+
+var testRemoveTailTestSuite = []struct {
+	name                    string
+	inputLength             uint
+	inputValues             []int
+	expectedValues          []int
+	expectedValuesInReverse []int
+	expectedError           error
+}{
+	{"BasicFuntionality", 2, []int{10}, []int{}, []int{}, nil},
+	{"EmptyValues", 5, []int{}, []int{}, []int{}, errors.New("tail does not exist")},
+	{"SizeOne", 1, []int{10}, []int{}, []int{}, nil},
+	{"TwoValues", 5, []int{1, 2}, []int{1}, []int{1}, nil},
+	{"MultipleValues", 5, []int{1, 2, 3, 4, 5}, []int{1, 2, 3, 4}, []int{4, 3, 2, 1}, nil},
+}
+
+// TestRemoveTail tests the functionality
+// of the RemoveTail() function
+func TestRemoveTail(t *testing.T) {
+	for _, testCase := range testRemoveTailTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			actualError := dList.RemoveTail()
+			assert.Equal(t, testCase.expectedError, actualError)
+
+			actualValues, actualValuesReversed := dList.List(), dList.ListReverse()
+
+			assert.Equal(t, testCase.expectedValues, actualValues)
+			assert.Equal(t, testCase.expectedValuesInReverse, actualValuesReversed)
+		})
+	}
+}

@@ -129,7 +129,14 @@ func (dList *DoublyLinkedList) RemoveTail() error {
 		return errors.New("tail does not exist")
 	}
 
+	if dList.tail == dList.head {
+		dList.head = nil
+		dList.tail = nil
+		return nil
+	}
+
 	dList.tail = dList.tail.previous
+	(dList.tail).next = nil
 
 	return nil
 }
