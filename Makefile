@@ -10,3 +10,7 @@ vet:
 lint:
 	@echo "go lint lfu package"	
 	golint ./...
+
+test:
+	@echo "Testing lfu package"	
+	go test -v -race --cover ./...
