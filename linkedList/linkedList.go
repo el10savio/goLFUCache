@@ -37,19 +37,19 @@ func (dList *DoublyLinkedList) ListReverse() []int {
 }
 
 // GetHead ...
-func (dlist *DoublyLinkedList) GetHead() (int, error) {
-	if dlist.head == nil {
+func (dList *DoublyLinkedList) GetHead() (int, error) {
+	if dList.head == nil {
 		return 0, errors.New("head does not exist")
 	}
-	return dlist.head.Value, nil
+	return dList.head.Value, nil
 }
 
 // GetTail ...
-func (dlist *DoublyLinkedList) GetTail() (int, error) {
-	if dlist.tail == nil {
+func (dList *DoublyLinkedList) GetTail() (int, error) {
+	if dList.tail == nil {
 		return 0, errors.New("tail does not exist")
 	}
-	return dlist.tail.Value, nil
+	return dList.tail.Value, nil
 }
 
 // Prepend (InsertAtFront) ...
