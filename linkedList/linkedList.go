@@ -190,29 +190,29 @@ func (dList *DoublyLinkedList) ClearList() {
 }
 
 // GetNextElement ...
-func GetNextElement(node *Node) (int, error) {
+func GetNextElement(node *Node) (*Node, error) {
 	if node == nil {
-		return 0, errors.New("node element does not exist")
+		return nil, errors.New("element does not exist")
 	}
 
 	if node.next == nil {
-		return 0, errors.New("node next element does not exist")
+		return nil, errors.New("next element does not exist")
 	}
 
-	return node.next.Value, nil
+	return node.next, nil
 }
 
 // GetPreviousElement ...
-func GetPreviousElement(node *Node) (int, error) {
+func GetPreviousElement(node *Node) (*Node, error) {
 	if node == nil {
-		return 0, errors.New("node element does not exist")
+		return nil, errors.New("element does not exist")
 	}
 
 	if node.previous == nil {
-		return 0, errors.New("node previous element does not exist")
+		return nil, errors.New("previous element does not exist")
 	}
 
-	return node.previous.Value, nil
+	return node.previous, nil
 }
 
 // traverseList ...

@@ -370,3 +370,87 @@ func TestFindElement(t *testing.T) {
 		})
 	}
 }
+
+var testGetNextElementTestSuite = []struct {
+	name                string
+	inputLength         uint
+	inputValues         []int
+	inputValueToGetNext int
+	expectedNodeValue   int
+	expectedError       error
+}{
+	{"BasicFunctionality", 5, []int{1, 2, 3, 4, 5}, 3, 4, nil},
+	{"SingleElement", 1, []int{1}, 1, 0, errors.New("next element does not exist")},
+	{"TwoElements", 2, []int{1, 2}, 1, 2, nil},
+	{"EmptyList", 5, []int{}, 11, 0, errors.New("element does not exist")},
+	{"NodeNotPresent", 5, []int{1, 2, 3, 4, 5}, 11, 0, errors.New("element does not exist")},
+	{"NextNodeNotPresent", 5, []int{1, 2, 3, 4, 5}, 5, 0, errors.New("next element does not exist")},
+}
+
+// TestGetNextElement tests the functionality
+// of the GetNextElement() function
+func TestGetNextElement(t *testing.T) {
+	for _, testCase := range testGetNextElementTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			searchNode, _ := dList.FindElement(testCase.inputValueToGetNext)
+			actualNode, actualError := GetNextElement(searchNode)
+
+			if actualNode == nil {
+				assert.Equal(t, testCase.expectedNodeValue, 0)
+			} else {
+				assert.Equal(t, testCase.expectedNodeValue, actualNode.Value)
+			}
+
+			assert.Equal(t, testCase.expectedError, actualError)
+		})
+	}
+}
+
+var testGetPreviousElementTestSuite = []struct {
+	name                    string
+	inputLength             uint
+	inputValues             []int
+	inputValueToGetPrevious int
+	expectedNodeValue       int
+	expectedError           error
+}{
+	{"BasicFunctionality", 5, []int{1, 2, 3, 4, 5}, 3, 2, nil},
+	{"SingleElement", 1, []int{1}, 1, 0, errors.New("previous element does not exist")},
+	{"TwoElements", 2, []int{1, 2}, 2, 1, nil},
+	{"EmptyList", 5, []int{}, 11, 0, errors.New("element does not exist")},
+	{"NodeNotPresent", 5, []int{1, 2, 3, 4, 5}, 11, 0, errors.New("element does not exist")},
+	{"PreviousNodeNotPresent", 5, []int{1, 2, 3, 4, 5}, 1, 0, errors.New("previous element does not exist")},
+}
+
+// TestGetPreviousElement tests the functionality
+// of the GetPreviousElement() function
+func TestGetPreviousElement(t *testing.T) {
+	for _, testCase := range testGetPreviousElementTestSuite {
+		t.Run(testCase.name, func(t *testing.T) {
+			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			defer dList.ClearList()
+
+			for _, inputValue := range testCase.inputValues {
+				dList.Append(inputValue)
+			}
+
+			searchNode, _ := dList.FindElement(testCase.inputValueToGetPrevious)
+			actualNode, actualError := GetPreviousElement(searchNode)
+
+			if actualNode == nil {
+				assert.Equal(t, testCase.expectedNodeValue, 0)
+			} else {
+				assert.Equal(t, testCase.expectedNodeValue, actualNode.Value)
+			}
+
+			assert.Equal(t, testCase.expectedError, actualError)
+		})
+	}
+}
