@@ -4,13 +4,9 @@ import "errors"
 
 var testInitDoublyLinkedListTestSuite = []struct {
 	name                     string
-	inputLength              uint
 	expectedDoublyLinkedList *DoublyLinkedList
-	expectedError            error
 }{
-	{"BasicFunctionality", 2, &DoublyLinkedList{2, nil, nil}, nil},
-	{"LargeList", 1000, &DoublyLinkedList{1000, nil, nil}, nil},
-	{"SizeZero", 0, nil, errors.New("list length cannot be zero")},
+	{"BasicFunctionality", &DoublyLinkedList{nil, nil}},
 }
 
 var testPrependTestSuite = []struct {
