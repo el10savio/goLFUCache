@@ -182,7 +182,7 @@ func (dList *DoublyLinkedList) FindElement(value int) (*Node, error) {
 
 // ClearList ...
 func (dList *DoublyLinkedList) ClearList() {
-	dList = &DoublyLinkedList{Length: dList.Length, head: nil, tail: nil}
+	dList = &DoublyLinkedList{head: nil, tail: nil}
 }
 
 // GetNextElement ...
