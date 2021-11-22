@@ -11,9 +11,8 @@ import (
 func TestInitDoublyLinkedList(t *testing.T) {
 	for _, testCase := range testInitDoublyLinkedListTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			actualDoublyLinkedList, actualError := InitDoublyLinkedList(testCase.inputLength)
+			actualDoublyLinkedList := InitDoublyLinkedList()
 			assert.Equal(t, testCase.expectedDoublyLinkedList, actualDoublyLinkedList)
-			assert.Equal(t, testCase.expectedError, actualError)
 		})
 	}
 }
@@ -23,7 +22,7 @@ func TestInitDoublyLinkedList(t *testing.T) {
 func TestPrepend(t *testing.T) {
 	for _, testCase := range testPrependTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -43,7 +42,7 @@ func TestPrepend(t *testing.T) {
 func TestAppend(t *testing.T) {
 	for _, testCase := range testAppendTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -63,7 +62,7 @@ func TestAppend(t *testing.T) {
 func TestInsertBetween(t *testing.T) {
 	for _, testCase := range testInsertBetweenTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -86,7 +85,7 @@ func TestInsertBetween(t *testing.T) {
 func TestGetHead(t *testing.T) {
 	for _, testCase := range testGetHeadTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -106,7 +105,7 @@ func TestGetHead(t *testing.T) {
 func TestGetTail(t *testing.T) {
 	for _, testCase := range testGetTailTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -126,7 +125,7 @@ func TestGetTail(t *testing.T) {
 func TestRemoveHead(t *testing.T) {
 	for _, testCase := range testRemoveHeadTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -149,7 +148,7 @@ func TestRemoveHead(t *testing.T) {
 func TestRemoveTail(t *testing.T) {
 	for _, testCase := range testRemoveTailTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -172,7 +171,7 @@ func TestRemoveTail(t *testing.T) {
 func TestRemoveElement(t *testing.T) {
 	for _, testCase := range testRemoveElementTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -195,7 +194,7 @@ func TestRemoveElement(t *testing.T) {
 func TestFindElement(t *testing.T) {
 	for _, testCase := range testFindElementTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -220,7 +219,7 @@ func TestFindElement(t *testing.T) {
 func TestGetNextElement(t *testing.T) {
 	for _, testCase := range testGetNextElementTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
@@ -246,7 +245,7 @@ func TestGetNextElement(t *testing.T) {
 func TestGetPreviousElement(t *testing.T) {
 	for _, testCase := range testGetPreviousElementTestSuite {
 		t.Run(testCase.name, func(t *testing.T) {
-			dList, _ := InitDoublyLinkedList(testCase.inputLength)
+			dList := InitDoublyLinkedList()
 			defer dList.ClearList()
 
 			for _, inputValue := range testCase.inputValues {
