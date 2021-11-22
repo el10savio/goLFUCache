@@ -13,9 +13,8 @@ type Node struct {
 
 // DoublyLinkedList ...
 type DoublyLinkedList struct {
-	Length uint
-	head   *Node
-	tail   *Node
+	head *Node
+	tail *Node
 }
 
 // InitDoublyLinkedList ...
