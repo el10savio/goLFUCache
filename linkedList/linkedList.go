@@ -31,7 +31,7 @@ func (dList *DoublyLinkedList) ListReverse() []int {
 // GetHead ...
 func (dList *DoublyLinkedList) GetHead() (int, error) {
 	if dList.head == nil {
-		return 0, ErrHeadDoesNotExist
+		return 0, errHeadDoesNotExist
 	}
 	return dList.head.Value, nil
 }
@@ -39,7 +39,7 @@ func (dList *DoublyLinkedList) GetHead() (int, error) {
 // GetTail ...
 func (dList *DoublyLinkedList) GetTail() (int, error) {
 	if dList.tail == nil {
-		return 0, ErrTailDoesNotExist
+		return 0, errTailDoesNotExist
 	}
 	return dList.tail.Value, nil
 }
@@ -79,7 +79,7 @@ func (dList *DoublyLinkedList) InsertBetween(value, valuePrevious, valueNext int
 	head := dList.head
 
 	if head == nil {
-		return ErrHeadDoesNotExist
+		return errHeadDoesNotExist
 	}
 
 	node := Node{Value: value}
@@ -94,13 +94,13 @@ func (dList *DoublyLinkedList) InsertBetween(value, valuePrevious, valueNext int
 		head = head.next
 	}
 
-	return ErrRangeDoesNotExist
+	return errRangeDoesNotExist
 }
 
 // RemoveHead ...
 func (dList *DoublyLinkedList) RemoveHead() error {
 	if dList.head == nil {
-		return ErrHeadDoesNotExist
+		return errHeadDoesNotExist
 	}
 
 	if dList.head == dList.tail {
@@ -118,7 +118,7 @@ func (dList *DoublyLinkedList) RemoveHead() error {
 // RemoveTail ...
 func (dList *DoublyLinkedList) RemoveTail() error {
 	if dList.tail == nil {
-		return ErrTailDoesNotExist
+		return errTailDoesNotExist
 	}
 
 	if dList.tail == dList.head {
@@ -136,7 +136,7 @@ func (dList *DoublyLinkedList) RemoveTail() error {
 // RemoveElement ...
 func (dList *DoublyLinkedList) RemoveElement(value int) error {
 	if dList.head == nil {
-		return ErrHeadDoesNotExist
+		return errHeadDoesNotExist
 	}
 
 	node, err := dList.FindElement(value)
@@ -161,7 +161,7 @@ func (dList *DoublyLinkedList) RemoveElement(value int) error {
 // FindElement ...
 func (dList *DoublyLinkedList) FindElement(value int) (*Node, error) {
 	if dList.head == nil {
-		return nil, ErrHeadDoesNotExist
+		return nil, errHeadDoesNotExist
 	}
 
 	temp := dList.head
@@ -173,7 +173,7 @@ func (dList *DoublyLinkedList) FindElement(value int) (*Node, error) {
 		temp = temp.next
 	}
 
-	return nil, ErrElementDoesNotExist
+	return nil, errElementDoesNotExist
 }
 
 // ClearList ...
@@ -184,11 +184,11 @@ func (dList *DoublyLinkedList) ClearList() {
 // GetNextElement ...
 func GetNextElement(node *Node) (*Node, error) {
 	if node == nil {
-		return nil, ErrElementDoesNotExist
+		return nil, errElementDoesNotExist
 	}
 
 	if node.next == nil {
-		return nil, ErrNextElementDoesNotExist
+		return nil, errNextElementDoesNotExist
 	}
 
 	return node.next, nil
@@ -197,11 +197,11 @@ func GetNextElement(node *Node) (*Node, error) {
 // GetPreviousElement ...
 func GetPreviousElement(node *Node) (*Node, error) {
 	if node == nil {
-		return nil, ErrElementDoesNotExist
+		return nil, errElementDoesNotExist
 	}
 
 	if node.previous == nil {
-		return nil, ErrPreviousElementDoesNotExist
+		return nil, errPreviousElementDoesNotExist
 	}
 
 	return node.previous, nil
