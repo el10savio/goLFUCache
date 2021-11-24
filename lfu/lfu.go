@@ -32,10 +32,5 @@ func InitLFUCache(capacity uint) (*LFU, error) {
 
 // ClearLFUCache ...
 func (lfu *LFU) ClearLFUCache() {
-	lfu = &LFU{
-		Capacity:      lfu.Capacity,
-		hashTable:     make(map[int]int),
-		frequencyList: *linkedList.InitDoublyLinkedList(),
-		accessList:    make([]linkedList.DoublyLinkedList, lfu.Capacity),
-	}
+	lfu, _ = InitLFUCache(lfu.Capacity)
 }
