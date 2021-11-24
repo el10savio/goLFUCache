@@ -14,8 +14,8 @@ type LFU struct {
 	accessList    []linkedList.DoublyLinkedList
 }
 
-// InitLFU ...
-func InitLFU(capacity uint) (*LFU, error) {
+// InitLFUCache ...
+func InitLFUCache(capacity uint) (*LFU, error) {
 	if capacity == 0 {
 		return nil, errors.New("cannot create lfu cache with 0 capacity")
 	}
@@ -28,4 +28,14 @@ func InitLFU(capacity uint) (*LFU, error) {
 	}
 
 	return lfu, nil
+}
+
+// ClearLFUCache ...
+func (lfu *LFU) ClearLFUCache() {
+	lfu = &LFU{
+		Capacity:      lfu.Capacity,
+		hashTable:     make(map[int]int),
+		frequencyList: *linkedList.InitDoublyLinkedList(),
+		accessList:    make([]linkedList.DoublyLinkedList, lfu.Capacity),
+	}
 }
