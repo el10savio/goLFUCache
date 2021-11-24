@@ -11,7 +11,7 @@ type LFU struct {
 	Capacity      uint
 	hashTable     map[int]int
 	frequencyList linkedList.DoublyLinkedList
-	accessList    []linkedList.DoublyLinkedList
+	accessLists   []linkedList.DoublyLinkedList
 }
 
 // InitLFUCache ...
@@ -24,7 +24,7 @@ func InitLFUCache(capacity uint) (*LFU, error) {
 		Capacity:      capacity,
 		hashTable:     make(map[int]int),
 		frequencyList: *linkedList.InitDoublyLinkedList(),
-		accessList:    make([]linkedList.DoublyLinkedList, capacity),
+		accessLists:   make([]linkedList.DoublyLinkedList, capacity),
 	}
 
 	return lfu, nil
