@@ -10,8 +10,20 @@ import (
 type LFU struct {
 	Capacity      uint
 	hashTable     map[int]int
+	accessList    []AccessNode
 	frequencyList linkedList.DoublyLinkedList
-	accessLists   []linkedList.DoublyLinkedList
+}
+
+// AccessNode ...
+type AccessNode struct {
+	frequency *linkedList.Node
+	set       []CacheEntry
+}
+
+// CacheEntry ...
+type CacheEntry struct {
+	Key   int
+	Value int
 }
 
 // InitLFUCache ...
@@ -23,8 +35,8 @@ func InitLFUCache(capacity uint) (*LFU, error) {
 	lfu := &LFU{
 		Capacity:      capacity,
 		hashTable:     make(map[int]int),
+		accessList:    make([]AccessNode, capacity),
 		frequencyList: *linkedList.InitDoublyLinkedList(),
-		accessLists:   make([]linkedList.DoublyLinkedList, capacity),
 	}
 
 	return lfu, nil
@@ -33,4 +45,11 @@ func InitLFUCache(capacity uint) (*LFU, error) {
 // ClearLFUCache ...
 func (lfu *LFU) ClearLFUCache() {
 	lfu, _ = InitLFUCache(lfu.Capacity)
+}
+
+// NewEntry ...
+func (lfu *LFU) NewEntry(key, value int) {
+	// Add To HashMap
+	// Add "1" To frequencyList
+	// Add Entry To 1's AccessList
 }
