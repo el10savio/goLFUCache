@@ -2,6 +2,8 @@ package lfu
 
 import (
 	"errors"
+	"fmt"
+	"log"
 
 	linkedList "github.com/el10savio/goLFUCache/linkedList"
 )
@@ -49,7 +51,23 @@ func (lfu *LFU) ClearLFUCache() {
 
 // NewEntry ...
 func (lfu *LFU) NewEntry(key, value int) {
-	// Add To HashMap
+	// Add To HashTable
+	lfu.hashTable[key] = value
+
 	// Add "1" To frequencyList
+	lfu.frequencyList.Append(1)
+
 	// Add Entry To 1's AccessList
+	frequencyNode, err := lfu.frequencyList.FindElement(1)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	accessNode := &AccessNode{
+		frequency: *&frequencyNode,
+		set:       []CacheEntry{{key, value}},
+	}
+
+	fmt.Println(accessNode)
+
 }
