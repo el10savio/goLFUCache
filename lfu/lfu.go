@@ -2,7 +2,6 @@ package lfu
 
 import (
 	"errors"
-	"fmt"
 	"log"
 
 	linkedList "github.com/el10savio/goLFUCache/linkedList"
@@ -12,14 +11,8 @@ import (
 type LFU struct {
 	Capacity      uint
 	hashTable     map[int]int
-	accessList    []AccessNode
+	accessList    map[*linkedList.Node][]CacheEntry
 	frequencyList linkedList.DoublyLinkedList
-}
-
-// AccessNode ...
-type AccessNode struct {
-	frequency *linkedList.Node
-	set       []CacheEntry
 }
 
 // CacheEntry ...
@@ -37,7 +30,7 @@ func InitLFUCache(capacity uint) (*LFU, error) {
 	lfu := &LFU{
 		Capacity:      capacity,
 		hashTable:     make(map[int]int),
-		accessList:    make([]AccessNode, capacity),
+		accessList:    make(map[*linkedList.Node][]CacheEntry),
 		frequencyList: *linkedList.InitDoublyLinkedList(),
 	}
 
@@ -63,11 +56,5 @@ func (lfu *LFU) NewEntry(key, value int) {
 		log.Fatal(err)
 	}
 
-	accessNode := &AccessNode{
-		frequency: *&frequencyNode,
-		set:       []CacheEntry{{key, value}},
-	}
-
-	fmt.Println(accessNode)
-
+	lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, value})
 }
