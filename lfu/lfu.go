@@ -2,7 +2,6 @@ package lfu
 
 import (
 	"errors"
-	"log"
 
 	linkedList "github.com/el10savio/goLFUCache/linkedList"
 )
@@ -43,7 +42,11 @@ func (lfu *LFU) ClearLFUCache() {
 }
 
 // NewEntry ...
-func (lfu *LFU) NewEntry(key, value int) {
+func (lfu *LFU) NewEntry(key, value int) error {
+	if _, ok := lfu.hashTable[key]; ok {
+		return errors.New("key already present in cache")
+	}
+
 	// Add To HashTable
 	lfu.hashTable[key] = value
 
@@ -53,8 +56,21 @@ func (lfu *LFU) NewEntry(key, value int) {
 	// Add Entry To 1's AccessList
 	frequencyNode, err := lfu.frequencyList.FindElement(1)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, value})
+
+	return nil
+}
+
+// GetEntry ...
+func (lfu *LFU) GetEntry(key int) (int, error) {
+	if _, ok := lfu.hashTable[key]; !ok {
+		return 0, errors.New("key is not present in cache")
+	}
+
+	// Update frequencyList
+
+	return lfu.hashTable[key], nil
 }
