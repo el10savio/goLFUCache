@@ -6,6 +6,10 @@ import (
 	linkedList "github.com/el10savio/goLFUCache/linkedList"
 )
 
+// TODO: traverseWithSet Function
+// [type: {<frequency>, <accessList>}]
+// For Unit Testing
+
 // LFU ...
 type LFU struct {
 	Capacity        uint
@@ -77,48 +81,6 @@ func (lfu *LFU) AddEntryToAccessList(nodeValue int, cacheEntry CacheEntry) error
 	return nil
 }
 
-// EvictLFUNode ...
-func (lfu *LFU) EvictLFUNode() error {
-	node := lfu.frequencyList.Head
-	if node == nil {
-		return errors.New("node is empty")
-	}
-
-	lfu.accessList[node] = lfu.accessList[node][1:]
-
-	if len(lfu.accessList[node]) == 0 {
-		err := lfu.frequencyList.RemoveElement(node.Value)
-		if err != nil {
-			return err
-		}
-	}
-
-	lfu.currentCapacity--
-
-	return nil
-}
-
-// RemoveEntry ...
-func (lfu *LFU) RemoveEntry(key int) error {
-	node, listIndex := lfu.FindNode(key)
-	if node == nil {
-		return errors.New("key is not present in cache")
-	}
-
-	lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
-
-	if len(lfu.accessList[node]) == 0 {
-		err := lfu.frequencyList.RemoveElement(node.Value)
-		if err != nil {
-			return err
-		}
-	}
-
-	lfu.currentCapacity--
-
-	return nil
-}
-
 // GetEntry ...
 func (lfu *LFU) GetEntry(key int) (int, error) {
 	if _, ok := lfu.hashTable[key]; !ok {
@@ -144,6 +106,48 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 	lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
 
 	return lfu.hashTable[key], nil
+}
+
+// EvictLFUNode ...
+func (lfu *LFU) EvictLFUNode() error {
+	head := lfu.frequencyList.Head
+	if head == nil {
+		return errors.New("head is empty")
+	}
+
+	if len(lfu.accessList[head]) == 0 {
+		return errors.New("head cache list is empty")
+	}
+
+	firstEntry := lfu.accessList[head][0].Key
+
+	err := lfu.RemoveEntry(firstEntry)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// RemoveEntry ...
+func (lfu *LFU) RemoveEntry(key int) error {
+	node, listIndex := lfu.FindNode(key)
+	if node == nil {
+		return errors.New("key is not present in cache")
+	}
+
+	lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
+
+	if len(lfu.accessList[node]) == 0 {
+		err := lfu.frequencyList.RemoveElement(node.Value)
+		if err != nil {
+			return err
+		}
+	}
+
+	lfu.currentCapacity--
+
+	return nil
 }
 
 // FindNode ...
