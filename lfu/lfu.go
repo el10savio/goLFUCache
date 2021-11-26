@@ -71,6 +71,26 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 	}
 
 	// Update frequencyList
+	// Find frequencyList Node containing key
+	// Check if frequencyList's Next Node exists (==freq++)
+	// If it does - move entry there
+	// Else Create Node
 
 	return lfu.hashTable[key], nil
+}
+
+// TODO: Error Handling
+func (lfu *LFU) FindNode(key int) *linkedList.Node {
+	head := lfu.frequencyList.Head
+
+	for head != nil {
+		for _, list := range lfu.accessList[head] {
+			if key == list.Key {
+				return head
+			}
+			head, _ = linkedList.GetNextElement(head)
+		}
+	}
+
+	return nil
 }
