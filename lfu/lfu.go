@@ -81,10 +81,7 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 	}
 
 	// Update frequencyList
-	// Find frequencyList Node containing key
 	node, listIndex := lfu.FindNode(key)
-
-	// Check if frequencyList's Next Node exists
 	next := node.Next
 
 	if next == nil {
@@ -93,7 +90,6 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 		lfu.frequencyList.InsertBetween(node.Value+1, node.Value, next.Value)
 	}
 
-	// Add Entry To AccessList
 	err := lfu.AddEntryToAccessList(node.Value+1, CacheEntry{key, lfu.hashTable[key]})
 	if err != nil {
 		return 0, err
