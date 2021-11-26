@@ -101,8 +101,6 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 }
 
 // FindNode ...
-// TODO: Error Handling
-// TODO: Change args order
 func (lfu *LFU) FindNode(key int) (*linkedList.Node, int) {
 	head := lfu.frequencyList.Head
 
