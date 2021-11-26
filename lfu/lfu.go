@@ -87,12 +87,10 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 	// Check if frequencyList's Next Node exists
 	next := node.Next
 
-	if next == nil || next.Value != node.Value+1 {
-		// Add node.Value+1 To frequencyList
+	if next == nil {
 		lfu.frequencyList.Append(node.Value + 1)
-
-		// TODO: Handle case where there's another node &
-		// the new node is to be added in between them
+	} else if next.Value != node.Value+1 {
+		lfu.frequencyList.InsertBetween(node.Value+1, node.Value, next.Value)
 	}
 
 	// Add Entry To AccessList
