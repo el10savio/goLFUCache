@@ -141,33 +141,3 @@ var testFindElementTestSuite = []struct {
 	{"EmptyList", []int{}, 11, 0, errHeadDoesNotExist},
 	{"NodeNotPresent", []int{1, 2, 3, 4, 5}, 11, 0, errElementDoesNotExist},
 }
-
-var testGetNextElementTestSuite = []struct {
-	name                string
-	inputValues         []int
-	inputValueToGetNext int
-	expectedNodeValue   int
-	expectedError       error
-}{
-	{"BasicFunctionality", []int{1, 2, 3, 4, 5}, 3, 4, nil},
-	{"SingleElement", []int{1}, 1, 0, errNextElementDoesNotExist},
-	{"TwoElements", []int{1, 2}, 1, 2, nil},
-	{"EmptyList", []int{}, 11, 0, errElementDoesNotExist},
-	{"NodeNotPresent", []int{1, 2, 3, 4, 5}, 11, 0, errElementDoesNotExist},
-	{"NextNodeNotPresent", []int{1, 2, 3, 4, 5}, 5, 0, errNextElementDoesNotExist},
-}
-
-var testGetPreviousElementTestSuite = []struct {
-	name                    string
-	inputValues             []int
-	inputValueToGetPrevious int
-	expectedNodeValue       int
-	expectedError           error
-}{
-	{"BasicFunctionality", []int{1, 2, 3, 4, 5}, 3, 2, nil},
-	{"SingleElement", []int{1}, 1, 0, errPreviousElementDoesNotExist},
-	{"TwoElements", []int{1, 2}, 2, 1, nil},
-	{"EmptyList", []int{}, 11, 0, errElementDoesNotExist},
-	{"NodeNotPresent", []int{1, 2, 3, 4, 5}, 11, 0, errElementDoesNotExist},
-	{"PreviousNodeNotPresent", []int{1, 2, 3, 4, 5}, 1, 0, errPreviousElementDoesNotExist},
-}

@@ -3,8 +3,8 @@ package linkedlist
 // Node ...
 type Node struct {
 	Value    int
-	previous *Node
-	next     *Node
+	Previous *Node
+	Next     *Node
 }
 
 // DoublyLinkedList ...
@@ -54,8 +54,8 @@ func (dList *DoublyLinkedList) Prepend(value int) {
 		return
 	}
 
-	dList.Head.previous = &node
-	node.next = dList.Head
+	dList.Head.Previous = &node
+	node.Next = dList.Head
 	dList.Head = &node
 }
 
@@ -69,8 +69,8 @@ func (dList *DoublyLinkedList) Append(value int) {
 		return
 	}
 
-	dList.Tail.next = &node
-	node.previous = dList.Tail
+	dList.Tail.Next = &node
+	node.Previous = dList.Tail
 	dList.Tail = &node
 }
 
@@ -84,14 +84,14 @@ func (dList *DoublyLinkedList) InsertBetween(value, valuePrevious, valueNext int
 
 	node := Node{Value: value}
 
-	for Head != nil && Head.next != nil {
-		if Head.Value == valuePrevious && (Head.next).Value == valueNext {
-			node.previous, node.next = Head, Head.next
-			(Head.next).previous = &node
-			Head.next = &node
+	for Head != nil && Head.Next != nil {
+		if Head.Value == valuePrevious && (Head.Next).Value == valueNext {
+			node.Previous, node.Next = Head, Head.Next
+			(Head.Next).Previous = &node
+			Head.Next = &node
 			return nil
 		}
-		Head = Head.next
+		Head = Head.Next
 	}
 
 	return errRangeDoesNotExist
@@ -109,8 +109,8 @@ func (dList *DoublyLinkedList) RemoveHead() error {
 		return nil
 	}
 
-	dList.Head = dList.Head.next
-	(dList.Head).previous = nil
+	dList.Head = dList.Head.Next
+	(dList.Head).Previous = nil
 
 	return nil
 }
@@ -127,8 +127,8 @@ func (dList *DoublyLinkedList) RemoveTail() error {
 		return nil
 	}
 
-	dList.Tail = dList.Tail.previous
-	(dList.Tail).next = nil
+	dList.Tail = dList.Tail.Previous
+	(dList.Tail).Next = nil
 
 	return nil
 }
@@ -152,8 +152,8 @@ func (dList *DoublyLinkedList) RemoveElement(value int) error {
 		return dList.RemoveTail()
 	}
 
-	node.previous.next = node.next
-	node.next.previous = node.previous
+	node.Previous.Next = node.Next
+	node.Next.Previous = node.Previous
 
 	return nil
 }
@@ -170,7 +170,7 @@ func (dList *DoublyLinkedList) FindElement(value int) (*Node, error) {
 		if temp.Value == value {
 			return temp, nil
 		}
-		temp = temp.next
+		temp = temp.Next
 	}
 
 	return nil, errElementDoesNotExist
@@ -181,38 +181,12 @@ func (dList *DoublyLinkedList) ClearList() {
 	dList = &DoublyLinkedList{Head: nil, Tail: nil}
 }
 
-// GetNextElement ...
-func GetNextElement(node *Node) (*Node, error) {
-	if node == nil {
-		return nil, errElementDoesNotExist
-	}
-
-	if node.next == nil {
-		return nil, errNextElementDoesNotExist
-	}
-
-	return node.next, nil
-}
-
-// GetPreviousElement ...
-func GetPreviousElement(node *Node) (*Node, error) {
-	if node == nil {
-		return nil, errElementDoesNotExist
-	}
-
-	if node.previous == nil {
-		return nil, errPreviousElementDoesNotExist
-	}
-
-	return node.previous, nil
-}
-
 // traverseList ...
 func traverseList(Head *Node) []int {
 	if Head == nil {
 		return []int{}
 	}
-	return append([]int{Head.Value}, traverseList(Head.next)...)
+	return append([]int{Head.Value}, traverseList(Head.Next)...)
 }
 
 // traverseListReverse ...
@@ -220,5 +194,5 @@ func traverseListReverse(Tail *Node) []int {
 	if Tail == nil {
 		return []int{}
 	}
-	return append([]int{Tail.Value}, traverseListReverse(Tail.previous)...)
+	return append([]int{Tail.Value}, traverseListReverse(Tail.Previous)...)
 }
