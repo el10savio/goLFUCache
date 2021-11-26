@@ -75,43 +75,32 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 	node, listIndex := lfu.FindNode(key)
 
 	// Check if frequencyList's Next Node exists
-	// TODO: err check
-	next, _ := linkedList.GetNextElement(node)
+	next := node.Next
 
-	if next != nil && next.Value == node.Value+1 {
-		// If it does - move entry there
-		frequencyNode, err := lfu.frequencyList.FindElement(next.Value)
-		if err != nil {
-			return 0, err
-		}
-
-		lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, node.Value})
-
-		// Delete Old frequencyNode's Entry
-		lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
-	} else {
-		// Else Create Node
-
-		// TODO: Handle case where there's another node &
-		// the new node is to be added in between them
-
+	if next == nil || next.Value != node.Value+1 {
 		// Add node.Value+1 To frequencyList
 		lfu.frequencyList.Append(node.Value + 1)
 
-		// Add Entry To AccessList
-		frequencyNode, err := lfu.frequencyList.FindElement(node.Value + 1)
-		if err != nil {
-			return 0, err
-		}
-
-		lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, lfu.hashTable[key]})
-
-		// Delete Old frequencyNode's Entry
-		lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
+		// TODO: Handle case where there's another node &
+		// the new node is to be added in between them
 	}
+
+	// TODO: Refactor To Seperate Function
+	// Add Entry To AccessList
+	frequencyNode, err := lfu.frequencyList.FindElement(node.Value + 1)
+	if err != nil {
+		return 0, err
+	}
+
+	lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, lfu.hashTable[key]})
+
+	// Delete Old frequencyNode's Entry
+	lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
+
 	return lfu.hashTable[key], nil
 }
 
+// FindNode ...
 // TODO: Error Handling
 // TODO: Change args order
 func (lfu *LFU) FindNode(key int) (*linkedList.Node, int) {
@@ -122,7 +111,7 @@ func (lfu *LFU) FindNode(key int) (*linkedList.Node, int) {
 			if key == list.Key {
 				return head, index
 			}
-			head, _ = linkedList.GetNextElement(head)
+			head = head.Next
 		}
 	}
 
