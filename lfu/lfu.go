@@ -54,12 +54,22 @@ func (lfu *LFU) NewEntry(key, value int) error {
 	lfu.frequencyList.Append(1)
 
 	// Add Entry To 1's AccessList
-	frequencyNode, err := lfu.frequencyList.FindElement(1)
+	err := lfu.AddEntryToAccessList(1, CacheEntry{key, value})
 	if err != nil {
 		return err
 	}
 
-	lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, value})
+	return nil
+}
+
+// AddEntryToAccessList ...
+func (lfu *LFU) AddEntryToAccessList(nodeValue int, cacheEntry CacheEntry) error {
+	frequencyNode, err := lfu.frequencyList.FindElement(nodeValue)
+	if err != nil {
+		return err
+	}
+
+	lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], cacheEntry)
 
 	return nil
 }
@@ -85,14 +95,11 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 		// the new node is to be added in between them
 	}
 
-	// TODO: Refactor To Seperate Function
 	// Add Entry To AccessList
-	frequencyNode, err := lfu.frequencyList.FindElement(node.Value + 1)
+	err := lfu.AddEntryToAccessList(node.Value+1, CacheEntry{key, lfu.hashTable[key]})
 	if err != nil {
 		return 0, err
 	}
-
-	lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, lfu.hashTable[key]})
 
 	// Delete Old frequencyNode's Entry
 	lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
