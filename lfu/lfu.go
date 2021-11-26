@@ -72,25 +72,59 @@ func (lfu *LFU) GetEntry(key int) (int, error) {
 
 	// Update frequencyList
 	// Find frequencyList Node containing key
-	// Check if frequencyList's Next Node exists (==freq++)
-	// If it does - move entry there
-	// Else Create Node
+	node, listIndex := lfu.FindNode(key)
 
+	// Check if frequencyList's Next Node exists
+	// TODO: err check
+	next, _ := linkedList.GetNextElement(node)
+
+	if next != nil && next.Value == node.Value+1 {
+		// If it does - move entry there
+		frequencyNode, err := lfu.frequencyList.FindElement(next.Value)
+		if err != nil {
+			return 0, err
+		}
+
+		lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, node.Value})
+
+		// Delete Old frequencyNode's Entry
+		lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
+	} else {
+		// Else Create Node
+
+		// TODO: Handle case where there's another node &
+		// the new node is to be added in between them
+
+		// Add node.Value+1 To frequencyList
+		lfu.frequencyList.Append(node.Value + 1)
+
+		// Add Entry To AccessList
+		frequencyNode, err := lfu.frequencyList.FindElement(node.Value + 1)
+		if err != nil {
+			return 0, err
+		}
+
+		lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], CacheEntry{key, lfu.hashTable[key]})
+
+		// Delete Old frequencyNode's Entry
+		lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
+	}
 	return lfu.hashTable[key], nil
 }
 
 // TODO: Error Handling
-func (lfu *LFU) FindNode(key int) *linkedList.Node {
+// TODO: Change args order
+func (lfu *LFU) FindNode(key int) (*linkedList.Node, int) {
 	head := lfu.frequencyList.Head
 
 	for head != nil {
-		for _, list := range lfu.accessList[head] {
+		for index, list := range lfu.accessList[head] {
 			if key == list.Key {
-				return head
+				return head, index
 			}
 			head, _ = linkedList.GetNextElement(head)
 		}
 	}
 
-	return nil
+	return nil, 0
 }
