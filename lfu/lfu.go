@@ -38,11 +38,6 @@ func InitLFUCache(capacity uint) (*LFU, error) {
 	return lfu, nil
 }
 
-// ClearLFUCache ...
-func (lfu *LFU) ClearLFUCache() {
-	lfu, _ = InitLFUCache(lfu.Capacity)
-}
-
 // NewEntry ...
 func (lfu *LFU) NewEntry(key, value int) error {
 	if _, ok := lfu.hashTable[key]; ok {
@@ -84,15 +79,36 @@ func (lfu *LFU) AddEntryToAccessList(nodeValue int, cacheEntry CacheEntry) error
 
 // EvictLFUNode ...
 func (lfu *LFU) EvictLFUNode() error {
-	head := lfu.frequencyList.Head
-	if head == nil {
-		return errors.New("frequency list is empty")
+	node := lfu.frequencyList.Head
+	if node == nil {
+		return errors.New("node is empty")
 	}
 
-	lfu.accessList[head] = lfu.accessList[head][1:]
+	lfu.accessList[node] = lfu.accessList[node][1:]
 
-	if len(lfu.accessList[head]) == 0 {
-		err := lfu.frequencyList.RemoveElement(head.Value)
+	if len(lfu.accessList[node]) == 0 {
+		err := lfu.frequencyList.RemoveElement(node.Value)
+		if err != nil {
+			return err
+		}
+	}
+
+	lfu.currentCapacity--
+
+	return nil
+}
+
+// RemoveEntry ...
+func (lfu *LFU) RemoveEntry(key int) error {
+	node, listIndex := lfu.FindNode(key)
+	if node == nil {
+		return errors.New("key is not present in cache")
+	}
+
+	lfu.accessList[node] = append(lfu.accessList[node][:listIndex], lfu.accessList[node][listIndex+1:]...)
+
+	if len(lfu.accessList[node]) == 0 {
+		err := lfu.frequencyList.RemoveElement(node.Value)
 		if err != nil {
 			return err
 		}
@@ -144,4 +160,9 @@ func (lfu *LFU) FindNode(key int) (*linkedList.Node, int) {
 	}
 
 	return nil, 0
+}
+
+// ClearLFUCache ...
+func (lfu *LFU) ClearLFUCache() {
+	lfu, _ = InitLFUCache(lfu.Capacity)
 }
