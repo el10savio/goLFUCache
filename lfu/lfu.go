@@ -8,10 +8,11 @@ import (
 
 // LFU ...
 type LFU struct {
-	Capacity      uint
-	hashTable     map[int]int
-	accessList    map[*linkedList.Node][]CacheEntry
-	frequencyList linkedList.DoublyLinkedList
+	Capacity        uint
+	currentCapacity uint
+	hashTable       map[int]int
+	accessList      map[*linkedList.Node][]CacheEntry
+	frequencyList   linkedList.DoublyLinkedList
 }
 
 // CacheEntry ...
@@ -27,10 +28,11 @@ func InitLFUCache(capacity uint) (*LFU, error) {
 	}
 
 	lfu := &LFU{
-		Capacity:      capacity,
-		hashTable:     make(map[int]int),
-		accessList:    make(map[*linkedList.Node][]CacheEntry),
-		frequencyList: *linkedList.InitDoublyLinkedList(),
+		Capacity:        capacity,
+		currentCapacity: 0,
+		hashTable:       make(map[int]int),
+		accessList:      make(map[*linkedList.Node][]CacheEntry),
+		frequencyList:   *linkedList.InitDoublyLinkedList(),
 	}
 
 	return lfu, nil
@@ -59,6 +61,12 @@ func (lfu *LFU) NewEntry(key, value int) error {
 		return err
 	}
 
+	lfu.currentCapacity++
+
+	if lfu.currentCapacity == lfu.Capacity {
+		lfu.EvictLFUNode()
+	}
+
 	return nil
 }
 
@@ -70,6 +78,27 @@ func (lfu *LFU) AddEntryToAccessList(nodeValue int, cacheEntry CacheEntry) error
 	}
 
 	lfu.accessList[frequencyNode] = append(lfu.accessList[frequencyNode], cacheEntry)
+
+	return nil
+}
+
+// EvictLFUNode ...
+func (lfu *LFU) EvictLFUNode() error {
+	head := lfu.frequencyList.Head
+	if head == nil {
+		return errors.New("frequency list is empty")
+	}
+
+	lfu.accessList[head] = lfu.accessList[head][1:]
+
+	if len(lfu.accessList[head]) == 0 {
+		err := lfu.frequencyList.RemoveElement(head.Value)
+		if err != nil {
+			return err
+		}
+	}
+
+	lfu.currentCapacity--
 
 	return nil
 }
